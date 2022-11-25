@@ -20,7 +20,6 @@ namespace Sonar.AutoSwitch
         public MainWindow()
         {
             InitializeComponent();
-            TitleBar.ExtendsContentIntoTitleBar = true;
             _frameView = this.FindControl<Frame>("FrameView")!;
             _frameView.Navigate(typeof(Home));
         }

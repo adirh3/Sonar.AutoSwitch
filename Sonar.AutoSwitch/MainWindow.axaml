@@ -15,7 +15,7 @@
             <ui:NavigationViewItem Content="Home" IsSelected="True" Tag="Home" Icon="Home" />
             <ui:NavigationViewItem Content="About" Tag="About" Icon="Help" />
         </ui:NavigationView.MenuItems>
-        <ScrollViewer Padding="8,25,8,8">
+        <ScrollViewer Padding="8">
             <ui:Frame Name="FrameView" />
         </ScrollViewer>
     </ui:NavigationView>
