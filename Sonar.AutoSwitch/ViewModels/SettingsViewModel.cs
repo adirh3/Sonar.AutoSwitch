@@ -1,4 +1,5 @@
 ﻿using Sonar.AutoSwitch.Services;
+using Sonar.AutoSwitch.Services.Win32;
 
 namespace Sonar.AutoSwitch.ViewModels;
 
@@ -26,6 +27,7 @@ public class SettingsViewModel : ViewModelBase
         {
             if (value == _startAtStartup) return;
             _startAtStartup = value;
+            StartupService.RegisterInStartup(_startAtStartup);
             OnPropertyChanged();
         }
     }

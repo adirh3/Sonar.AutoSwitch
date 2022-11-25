@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Sonar.AutoSwitch.Services;
 
@@ -9,9 +11,10 @@ public class StateManager
 {
     private readonly string _appDataPath;
     private readonly Dictionary<Type, object?> _states = new();
-    
+    private readonly DelayedDeduplicateAction _delayedDeduplicateAction = new();
+
     public static StateManager Instance { get; } = new();
-    
+
 
     private StateManager()
     {
@@ -29,10 +32,16 @@ public class StateManager
             Directory.CreateDirectory(_appDataPath);
         }
 
-        string jsonPath = Path.Combine(_appDataPath, typeof(T).Name + ".json");
-        File.WriteAllText(jsonPath, JsonSerializer.Serialize(state));
+        _delayedDeduplicateAction.QueueAction(async () =>
+        {
+            string jsonPath = Path.Combine(_appDataPath, typeof(T).Name + ".json");
+#pragma warning disable IL2026
+            await File.WriteAllTextAsync(jsonPath, JsonSerializer.Serialize(state));
+#pragma warning restore IL2026
+        });
     }
-    
+
+
     public T GetOrLoadState<T>() where T : new()
     {
         if (GetState<T>() is { } existingState)
@@ -50,7 +59,7 @@ public class StateManager
     {
         return File.Exists(Path.Combine(_appDataPath, typeof(T).Name + ".json"));
     }
-    
+
     private T? GetState<T>()
     {
         if (_states.TryGetValue(typeof(T), out object? existing) && existing is T existingState)

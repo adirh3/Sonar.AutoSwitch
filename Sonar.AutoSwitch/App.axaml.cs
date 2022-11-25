@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Sonar.AutoSwitch.Services;
+using Sonar.AutoSwitch.Services.Win32;
 using Sonar.AutoSwitch.ViewModels;
 
 namespace Sonar.AutoSwitch
@@ -44,6 +45,8 @@ namespace Sonar.AutoSwitch
             var settingsViewModel = StateManager.Instance.GetOrLoadState<SettingsViewModel>();
             if (settingsViewModel.Enabled)
                 AutoSwitchService.Instance.ToggleEnabled(settingsViewModel.Enabled);
+            if (settingsViewModel.StartAtStartup)
+                StartupService.RegisterInStartup(true);
             base.OnFrameworkInitializationCompleted();
         }
     }

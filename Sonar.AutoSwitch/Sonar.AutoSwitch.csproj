@@ -9,6 +9,7 @@
         <TrimMode>copyused</TrimMode>
         <_TrimmerDefaultAction>copy</_TrimmerDefaultAction>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
     </PropertyGroup>
     <ItemGroup>
         <None Remove=".gitignore" />
