@@ -7,6 +7,7 @@
         mc:Ignorable="d" Width="600" Height="450"
         x:Class="Sonar.AutoSwitch.MainWindow"
         TransparencyLevelHint="Mica"
+        Icon="/Assets/icon.ico"
         Title="Sonar Auto Switch">
     <ui:NavigationView SelectionChanged="NavigationView_OnSelectionChanged" PaneDisplayMode="LeftCompact"
                        windowing:AppWindow.AllowInteractionInTitleBar="True">
