@@ -8,12 +8,12 @@ namespace Sonar.AutoSwitch.Services;
 public class StateManager
 {
     private readonly string _appDataPath;
-
-    public static StateManager Instance { get; } = new();
-
     private readonly Dictionary<Type, object?> _states = new();
+    
+    public static StateManager Instance { get; } = new();
+    
 
-    public StateManager()
+    private StateManager()
     {
         _appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "Sonar.AutoSwitch");
@@ -32,14 +32,7 @@ public class StateManager
         string jsonPath = Path.Combine(_appDataPath, typeof(T).Name + ".json");
         File.WriteAllText(jsonPath, JsonSerializer.Serialize(state));
     }
-
-    public T? GetState<T>()
-    {
-        if (_states.TryGetValue(typeof(T), out object? existing) && existing is T existingState)
-            return existingState;
-        return default;
-    }
-
+    
     public T GetOrLoadState<T>() where T : new()
     {
         if (GetState<T>() is { } existingState)
@@ -56,5 +49,12 @@ public class StateManager
     public bool CheckStateExists<T>()
     {
         return File.Exists(Path.Combine(_appDataPath, typeof(T).Name + ".json"));
+    }
+    
+    private T? GetState<T>()
+    {
+        if (_states.TryGetValue(typeof(T), out object? existing) && existing is T existingState)
+            return existingState;
+        return default;
     }
 }

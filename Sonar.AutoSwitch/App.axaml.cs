@@ -2,6 +2,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Sonar.AutoSwitch.Services;
+using Sonar.AutoSwitch.ViewModels;
 
 namespace Sonar.AutoSwitch
 {
@@ -9,7 +11,7 @@ namespace Sonar.AutoSwitch
     {
         public void Open()
         {
-            if (App.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
+            if (Application.Current!.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
             {
                 lifetime.MainWindow ??= new MainWindow();
                 lifetime.MainWindow.Show();
@@ -39,6 +41,9 @@ namespace Sonar.AutoSwitch
                 desktop.MainWindow = new MainWindow();
             }
 
+            var settingsViewModel = StateManager.Instance.GetOrLoadState<SettingsViewModel>();
+            if (settingsViewModel.Enabled)
+                AutoSwitchService.Instance.ToggleEnabled(settingsViewModel.Enabled);
             base.OnFrameworkInitializationCompleted();
         }
     }
