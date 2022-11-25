@@ -7,6 +7,7 @@ namespace Sonar.AutoSwitch.Services;
 public class AutoSwitchService
 {
     private readonly HomeViewModel _homeViewModel;
+    private SonarGamingConfiguration _selectedGamingConfiguration;
 
     public AutoSwitchService()
     {
@@ -35,11 +36,13 @@ public class AutoSwitchService
                 string.Equals(p.ExeName, windowExeName, StringComparison.OrdinalIgnoreCase));
         SonarGamingConfiguration? sonarGamingConfiguration = autoSwitchProfileViewModel?.SonarGamingConfiguration;
         sonarGamingConfiguration ??= _homeViewModel.DefaultSonarGamingConfiguration;
-        if (string.IsNullOrEmpty(sonarGamingConfiguration.Id))
+        if (string.IsNullOrEmpty(sonarGamingConfiguration.Id) ||
+            _selectedGamingConfiguration == sonarGamingConfiguration)
             return;
 
         string selectedGamingConfigurationId =
             SteelSeriesSonarService.Instance.GetSelectedGamingConfiguration();
+        _selectedGamingConfiguration = sonarGamingConfiguration;
         if (sonarGamingConfiguration.Id == selectedGamingConfigurationId)
             return;
         SteelSeriesSonarService.Instance.ChangeSelectedGamingConfiguration(sonarGamingConfiguration);
