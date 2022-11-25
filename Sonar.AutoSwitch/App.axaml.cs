@@ -6,48 +6,29 @@ using Sonar.AutoSwitch.Services;
 using Sonar.AutoSwitch.Services.Win32;
 using Sonar.AutoSwitch.ViewModels;
 
-namespace Sonar.AutoSwitch
-{
-    public class AppViewModel
-    {
-        public void Open()
-        {
-            if (Application.Current!.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
-            {
-                lifetime.MainWindow ??= new MainWindow();
-                lifetime.MainWindow.Show();
-            }
-        }
+namespace Sonar.AutoSwitch;
 
-        public void Exit()
-        {
-            if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
-                lifetime.Shutdown();
-        }
+public class App : Application
+{
+    public override void Initialize()
+    {
+        DataContext = new AppViewModel();
+        AvaloniaXamlLoader.Load(this);
     }
 
-    public partial class App : Application
+    public override void OnFrameworkInitializationCompleted()
     {
-        public override void Initialize()
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            DataContext = new AppViewModel();
-            AvaloniaXamlLoader.Load(this);
+            desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            desktop.MainWindow = new MainWindow();
         }
 
-        public override void OnFrameworkInitializationCompleted()
-        {
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-                desktop.MainWindow = new MainWindow();
-            }
-
-            var settingsViewModel = StateManager.Instance.GetOrLoadState<SettingsViewModel>();
-            if (settingsViewModel.Enabled)
-                AutoSwitchService.Instance.ToggleEnabled(settingsViewModel.Enabled);
-            if (settingsViewModel.StartAtStartup)
-                StartupService.RegisterInStartup(true);
-            base.OnFrameworkInitializationCompleted();
-        }
+        var settingsViewModel = StateManager.Instance.GetOrLoadState<SettingsViewModel>();
+        if (settingsViewModel.Enabled)
+            AutoSwitchService.Instance.ToggleEnabled(settingsViewModel.Enabled);
+        if (settingsViewModel.StartAtStartup)
+            StartupService.RegisterInStartup(true);
+        base.OnFrameworkInitializationCompleted();
     }
 }

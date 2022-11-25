@@ -12,12 +12,9 @@ public class StartupService
         RegistryKey registryKey = Registry.CurrentUser.OpenSubKey
             ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
         if (isChecked)
-        {
             registryKey.SetValue("Sonar.AutoSwitch",
                 Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Sonar.AutoSwitch.exe"));
-        }
         else
-        {
             try
             {
                 registryKey.DeleteValue("Sonar.AutoSwitch");
@@ -26,6 +23,5 @@ public class StartupService
             {
                 // ignored
             }
-        }
     }
 }

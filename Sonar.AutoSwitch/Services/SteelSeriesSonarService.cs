@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Net.NetworkInformation;
 using Microsoft.Data.Sqlite;
 using Sonar.AutoSwitch.Services.Win32;
 
@@ -13,8 +12,6 @@ namespace Sonar.AutoSwitch.Services;
 public class SteelSeriesSonarService : ISteelSeriesSonarService
 {
     private readonly string _connectionString;
-
-    public static SteelSeriesSonarService Instance { get; } = new();
 
     public SteelSeriesSonarService()
     {
@@ -25,22 +22,10 @@ public class SteelSeriesSonarService : ISteelSeriesSonarService
         }.ToString();
     }
 
+    public static SteelSeriesSonarService Instance { get; } = new();
+
     public IEnumerable<SonarGamingConfiguration> AvailableGamingConfigurations =>
         GetGamingConfigurations().OrderBy(s => s.Name);
-
-    public string GetSelectedGamingConfiguration()
-    {
-        // Get all the available profiles from SQLite
-        using var sqliteConnection = new SqliteConnection(_connectionString);
-        sqliteConnection.Open();
-
-        using SqliteCommand sqliteCommand = sqliteConnection.CreateCommand();
-        sqliteCommand.CommandText = "select config_id, vad from selected_config where vad == 1";
-        using SqliteDataReader sqliteDataReader = sqliteCommand.ExecuteReader();
-        if (!sqliteDataReader.Read())
-            throw new InvalidOperationException("Unable to check for selected gaming profile");
-        return sqliteDataReader.GetString(0);
-    }
 
     public IEnumerable<SonarGamingConfiguration> GetGamingConfigurations()
     {
@@ -75,5 +60,19 @@ public class SteelSeriesSonarService : ISteelSeriesSonarService
         var httpClient = new HttpClient();
         httpClient.PutAsync($"http://localhost:{portById}/configs/{sonarGamingConfiguration.Id}/select",
             new StringContent(""));
+    }
+
+    public string GetSelectedGamingConfiguration()
+    {
+        // Get all the available profiles from SQLite
+        using var sqliteConnection = new SqliteConnection(_connectionString);
+        sqliteConnection.Open();
+
+        using SqliteCommand sqliteCommand = sqliteConnection.CreateCommand();
+        sqliteCommand.CommandText = "select config_id, vad from selected_config where vad == 1";
+        using SqliteDataReader sqliteDataReader = sqliteCommand.ExecuteReader();
+        if (!sqliteDataReader.Read())
+            throw new InvalidOperationException("Unable to check for selected gaming profile");
+        return sqliteDataReader.GetString(0);
     }
 }

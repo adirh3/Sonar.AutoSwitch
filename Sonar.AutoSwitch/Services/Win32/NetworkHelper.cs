@@ -7,6 +7,21 @@ namespace Sonar.AutoSwitch.Services.Win32;
 
 public class NetworkHelper
 {
+
+// https://msdn2.microsoft.com/en-us/library/aa366386.aspx
+    public enum TCP_TABLE_CLASS
+    {
+        TCP_TABLE_BASIC_LISTENER,
+        TCP_TABLE_BASIC_CONNECTIONS,
+        TCP_TABLE_BASIC_ALL,
+        TCP_TABLE_OWNER_PID_LISTENER,
+        TCP_TABLE_OWNER_PID_CONNECTIONS,
+        TCP_TABLE_OWNER_PID_ALL,
+        TCP_TABLE_OWNER_MODULE_LISTENER,
+        TCP_TABLE_OWNER_MODULE_CONNECTIONS,
+        TCP_TABLE_OWNER_MODULE_ALL
+    }
+
     public static int? GetPortById(int pid)
     {
         var mibTcprowOwnerPids = new IPHelperWrapper().GetAllTCPv6Connections();
@@ -20,7 +35,7 @@ public class NetworkHelper
 
         return null;
     }
-    
+
     static int GetPort(byte[] bytes)
     {
         ushort num = BitConverter.ToUInt16(bytes, 0);
@@ -89,37 +104,6 @@ public class NetworkHelper
 
         [MarshalAs(UnmanagedType.ByValArray, ArraySubType = UnmanagedType.Struct, SizeConst = 1)]
         public MIB_TCP6ROW_OWNER_PID[] table;
-    }
-
-// https://msdn2.microsoft.com/en-us/library/aa366386.aspx
-    public enum TCP_TABLE_CLASS
-    {
-        TCP_TABLE_BASIC_LISTENER,
-        TCP_TABLE_BASIC_CONNECTIONS,
-        TCP_TABLE_BASIC_ALL,
-        TCP_TABLE_OWNER_PID_LISTENER,
-        TCP_TABLE_OWNER_PID_CONNECTIONS,
-        TCP_TABLE_OWNER_PID_ALL,
-        TCP_TABLE_OWNER_MODULE_LISTENER,
-        TCP_TABLE_OWNER_MODULE_CONNECTIONS,
-        TCP_TABLE_OWNER_MODULE_ALL
-    }
-
-// https://msdn.microsoft.com/en-us/library/aa366896.aspx
-    public enum MIB_TCP_STATE
-    {
-        MIB_TCP_STATE_CLOSED,
-        MIB_TCP_STATE_LISTEN,
-        MIB_TCP_STATE_SYN_SENT,
-        MIB_TCP_STATE_SYN_RCVD,
-        MIB_TCP_STATE_ESTAB,
-        MIB_TCP_STATE_FIN_WAIT1,
-        MIB_TCP_STATE_FIN_WAIT2,
-        MIB_TCP_STATE_CLOSE_WAIT,
-        MIB_TCP_STATE_CLOSING,
-        MIB_TCP_STATE_LAST_ACK,
-        MIB_TCP_STATE_TIME_WAIT,
-        MIB_TCP_STATE_DELETE_TCB
     }
 
     public static class IPHelperAPI

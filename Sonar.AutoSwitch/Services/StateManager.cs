@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Sonar.AutoSwitch.Services;
 
 public class StateManager
 {
     private readonly string _appDataPath;
-    private readonly Dictionary<Type, object?> _states = new();
     private readonly DelayedDeduplicateAction _delayedDeduplicateAction = new();
-
-    public static StateManager Instance { get; } = new();
+    private readonly Dictionary<Type, object?> _states = new();
 
 
     private StateManager()
@@ -22,15 +18,14 @@ public class StateManager
             "Sonar.AutoSwitch");
     }
 
+    public static StateManager Instance { get; } = new();
+
     public void SaveState<T>()
     {
         if (GetState<T>() is not { } state)
             return;
 
-        if (!Directory.Exists(_appDataPath))
-        {
-            Directory.CreateDirectory(_appDataPath);
-        }
+        if (!Directory.Exists(_appDataPath)) Directory.CreateDirectory(_appDataPath);
 
         _delayedDeduplicateAction.QueueAction(async () =>
         {

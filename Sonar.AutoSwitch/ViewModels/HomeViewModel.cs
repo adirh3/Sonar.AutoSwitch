@@ -8,26 +8,11 @@ namespace Sonar.AutoSwitch.ViewModels;
 
 public class HomeViewModel : ViewModelBase
 {
-    private AutoSwitchProfileViewModel? _selectedAutoSwitchProfileViewModel;
-    private SonarGamingConfiguration _defaultSonarGamingConfiguration = new(null, "unset");
-
     private ObservableCollection<AutoSwitchProfileViewModel> _autoSwitchProfiles =
         new() {new AutoSwitchProfileViewModel()};
 
-    public static HomeViewModel LoadHomeViewModel()
-    {
-        bool firstLoad = !StateManager.Instance.CheckStateExists<HomeViewModel>();
-        var homeViewModel = StateManager.Instance.GetOrLoadState<HomeViewModel>();
-        var steelSeriesSonarService = SteelSeriesSonarService.Instance;
-        if (firstLoad)
-        {
-            string selectedConfigId = steelSeriesSonarService.GetSelectedGamingConfiguration();
-            homeViewModel.DefaultSonarGamingConfiguration = steelSeriesSonarService.GetGamingConfigurations()
-                .FirstOrDefault(gc => gc.Id == selectedConfigId) ?? homeViewModel.DefaultSonarGamingConfiguration;
-        }
-
-        return homeViewModel;
-    }
+    private SonarGamingConfiguration _defaultSonarGamingConfiguration = new(null, "unset");
+    private AutoSwitchProfileViewModel? _selectedAutoSwitchProfileViewModel;
 
     public HomeViewModel()
     {
@@ -66,6 +51,21 @@ public class HomeViewModel : ViewModelBase
             _selectedAutoSwitchProfileViewModel = value;
             OnPropertyChanged();
         }
+    }
+
+    public static HomeViewModel LoadHomeViewModel()
+    {
+        bool firstLoad = !StateManager.Instance.CheckStateExists<HomeViewModel>();
+        var homeViewModel = StateManager.Instance.GetOrLoadState<HomeViewModel>();
+        var steelSeriesSonarService = SteelSeriesSonarService.Instance;
+        if (firstLoad)
+        {
+            string selectedConfigId = steelSeriesSonarService.GetSelectedGamingConfiguration();
+            homeViewModel.DefaultSonarGamingConfiguration = steelSeriesSonarService.GetGamingConfigurations()
+                .FirstOrDefault(gc => gc.Id == selectedConfigId) ?? homeViewModel.DefaultSonarGamingConfiguration;
+        }
+
+        return homeViewModel;
     }
 
     public void RemoveAutoSwitchProfile()

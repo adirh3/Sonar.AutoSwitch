@@ -37,10 +37,10 @@
         <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
     </ItemGroup>
     <ItemGroup>
-      <Compile Update="Pages\Home.axaml.cs">
-        <DependentUpon>Settings.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
+        <Compile Update="Pages\Home.axaml.cs">
+            <DependentUpon>Settings.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
     <Target Name="PostClean" AfterTargets="Clean">
         <Exec Command="if exist bin rmdir /s /q bin" />

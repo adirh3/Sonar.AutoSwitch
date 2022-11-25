@@ -1,6 +1,5 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using Sonar.AutoSwitch.Services;
 using Sonar.AutoSwitch.ViewModels;
 
 namespace Sonar.AutoSwitch.Pages;

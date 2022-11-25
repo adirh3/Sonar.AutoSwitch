@@ -1,5 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Sonar.AutoSwitch.Services;
 using Sonar.AutoSwitch.ViewModels;

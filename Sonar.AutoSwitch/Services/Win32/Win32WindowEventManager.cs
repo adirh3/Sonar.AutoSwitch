@@ -15,8 +15,8 @@ public interface IWindowEventManager
 
 public class Win32WindowEventManager : IWindowEventManager
 {
-    private IntPtr _windowEventHook;
     private readonly WinEventProc _lpfnWinEventProc;
+    private IntPtr _windowEventHook;
 
     public Win32WindowEventManager()
     {

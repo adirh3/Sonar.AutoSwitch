@@ -19,13 +19,9 @@ public class AutoSwitchService
     public void ToggleEnabled(bool enable)
     {
         if (enable)
-        {
             WindowEventManager.Instance.SubscribeToWindowEvents();
-        }
         else
-        {
             WindowEventManager.Instance.UnsubscribeToWindowsEvents();
-        }
     }
 
     private void InstanceOnForegroundWindowChanged(object? sender, WindowInfo e)
