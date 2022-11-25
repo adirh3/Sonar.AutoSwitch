@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
-using System.Reflection;
 using Microsoft.Win32;
 
 namespace Sonar.AutoSwitch.Services.Win32;
