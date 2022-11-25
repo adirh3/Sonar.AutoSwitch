@@ -23,6 +23,7 @@
         https://github.com/AvaloniaUI/Avalonia/issues/5593 -->
         <TrimmableAssembly Include="Avalonia.Themes.Fluent" />
         <TrimmableAssembly Include="Avalonia.Themes.Default" />
+        <TrimmableAssembly Include="Microsoft.Win32.Registry" />
         <TrimmableAssembly Include="FluentAvaloniaUI" />
         <TrimmableAssembly Include="FluentAvalonia" />
     </ItemGroup>
