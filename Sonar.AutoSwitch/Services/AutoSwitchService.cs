@@ -42,9 +42,9 @@ public class AutoSwitchService
         if (string.IsNullOrEmpty(sonarGamingConfiguration.Id))
             return;
 
-        SonarGamingConfiguration selectedGamingConfiguration =
+        string selectedGamingConfigurationId =
             SteelSeriesSonarService.Instance.GetSelectedGamingConfiguration();
-        if (selectedGamingConfiguration.Equals(sonarGamingConfiguration))
+        if (sonarGamingConfiguration.Id == selectedGamingConfigurationId)
             return;
         SteelSeriesSonarService.Instance.ChangeSelectedGamingConfiguration(sonarGamingConfiguration);
     }

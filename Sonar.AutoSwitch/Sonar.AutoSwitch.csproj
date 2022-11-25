@@ -3,6 +3,8 @@
         <OutputType>WinExe</OutputType>
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <PublishTrimmed>true</PublishTrimmed>
+        <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
         <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
         <TrimMode>copyused</TrimMode>
         <_TrimmerDefaultAction>copy</_TrimmerDefaultAction>
@@ -40,7 +42,7 @@
       </Compile>
     </ItemGroup>
     <Target Name="PostClean" AfterTargets="Clean">
-        <Exec Command="if exist bin rmdir /s /q bin"/>
-        <Exec Command="if exist obj rmdir /s /q obj"/>
+        <Exec Command="if exist bin rmdir /s /q bin" />
+        <Exec Command="if exist obj rmdir /s /q obj" />
     </Target>
 </Project>

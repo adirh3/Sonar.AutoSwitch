@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.NetworkInformation;
 using Microsoft.Data.Sqlite;
+using Sonar.AutoSwitch.Services.Win32;
 
 namespace Sonar.AutoSwitch.Services;
 
@@ -24,20 +27,18 @@ public class SteelSeriesSonarService : ISteelSeriesSonarService
 
     public IEnumerable<SonarGamingConfiguration> AvailableGamingConfigurations => GetGamingConfigurations();
 
-    public SonarGamingConfiguration GetSelectedGamingConfiguration()
+    public string GetSelectedGamingConfiguration()
     {
         // Get all the available profiles from SQLite
         using var sqliteConnection = new SqliteConnection(_connectionString);
         sqliteConnection.Open();
 
         using SqliteCommand sqliteCommand = sqliteConnection.CreateCommand();
-        sqliteCommand.CommandText = "select id, name, vad from configs where vad == 1";
+        sqliteCommand.CommandText = "select config_id, vad from selected_config where vad == 1";
         using SqliteDataReader sqliteDataReader = sqliteCommand.ExecuteReader();
         if (!sqliteDataReader.Read())
             throw new InvalidOperationException("Unable to check for selected gaming profile");
-        string id = sqliteDataReader.GetString(0);
-        string name = sqliteDataReader.GetString(1);
-        return new SonarGamingConfiguration(id, name);
+        return sqliteDataReader.GetString(0);
     }
 
     public IEnumerable<SonarGamingConfiguration> GetGamingConfigurations()
@@ -62,23 +63,16 @@ public class SteelSeriesSonarService : ISteelSeriesSonarService
         if (string.IsNullOrEmpty(sonarGamingConfiguration.Id))
             return;
 
-        Process[] processesByName = Process.GetProcessesByName("SteelSeriesSonar");
-        if (!processesByName.Any())
+        Process[] processesByName = Process.GetProcessesByName("SteelSeriesGGClient");
+        if (processesByName.Length < 1)
             return;
-        // Kill sonar process
-        using Process sonarProcess = processesByName.First();
-        string sonarPath = sonarProcess.MainModule!.FileName!;
-        sonarProcess.Kill();
 
-        // Change the config Id in SQLite
-        using var sqliteConnection = new SqliteConnection(_connectionString);
-        sqliteConnection.Open();
-        using SqliteCommand sqliteCommand = sqliteConnection.CreateCommand();
-        sqliteCommand.CommandText = "update selected_config set config_id = $id where vad == 1";
-        sqliteCommand.Parameters.AddWithValue("$id", sonarGamingConfiguration.Id);
-        sqliteCommand.ExecuteNonQuery();
+        int? portById = processesByName.Select(p => NetworkHelper.GetPortById(p.Id)).FirstOrDefault(p => p != null);
+        if (portById == null)
+            return;
 
-        // Start sonar again
-        Process.Start(sonarPath).Dispose();
+        var httpClient = new HttpClient();
+        httpClient.PutAsync($"http://localhost:{portById}/configs/{sonarGamingConfiguration.Id}/select",
+            new StringContent(""));
     }
 }
