@@ -25,7 +25,8 @@ public class SteelSeriesSonarService : ISteelSeriesSonarService
         }.ToString();
     }
 
-    public IEnumerable<SonarGamingConfiguration> AvailableGamingConfigurations => GetGamingConfigurations();
+    public IEnumerable<SonarGamingConfiguration> AvailableGamingConfigurations =>
+        GetGamingConfigurations().OrderBy(s => s.Name);
 
     public string GetSelectedGamingConfiguration()
     {

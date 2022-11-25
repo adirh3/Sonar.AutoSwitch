@@ -4,5 +4,5 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Sonar.AutoSwitch.Pages.About">
-    Welcome to Avalonia!
+    <TextBlock Text="This is not an official software.&#x0a;Last tested with GG version 27.1.0.&#x0a;Enjoy :)" />
 </UserControl>
