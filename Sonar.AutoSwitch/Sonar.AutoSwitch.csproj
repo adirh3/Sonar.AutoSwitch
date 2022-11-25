@@ -1,10 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
         <TrimMode>copyused</TrimMode>
+        <_TrimmerDefaultAction>copy</_TrimmerDefaultAction>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     </PropertyGroup>
     <ItemGroup>
@@ -19,6 +20,8 @@
         https://github.com/AvaloniaUI/Avalonia/issues/5593 -->
         <TrimmableAssembly Include="Avalonia.Themes.Fluent" />
         <TrimmableAssembly Include="Avalonia.Themes.Default" />
+        <TrimmableAssembly Include="FluentAvaloniaUI" />
+        <TrimmableAssembly Include="FluentAvalonia" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="11.0.0-preview4" />
@@ -36,4 +39,8 @@
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>
+    <Target Name="PostClean" AfterTargets="Clean">
+        <Exec Command="if exist bin rmdir /s /q bin"/>
+        <Exec Command="if exist obj rmdir /s /q obj"/>
+    </Target>
 </Project>
