@@ -1,0 +1,21 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+        xmlns:windowing="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia.UI.Windowing"
+        mc:Ignorable="d" Width="600" Height="450"
+        x:Class="Sonar.AutoSwitch.MainWindow"
+        TransparencyLevelHint="Mica"
+        Title="Sonar Auto Switch">
+    <ui:NavigationView SelectionChanged="NavigationView_OnSelectionChanged" PaneDisplayMode="LeftCompact"
+                       windowing:AppWindow.AllowInteractionInTitleBar="True">
+        <ui:NavigationView.MenuItems>
+            <ui:NavigationViewItem Content="Home" IsSelected="True" Tag="Home" Icon="Home" />
+            <ui:NavigationViewItem Content="About" Tag="About" Icon="Help" />
+        </ui:NavigationView.MenuItems>
+        <ScrollViewer Padding="8,25,8,8">
+            <ui:Frame Name="FrameView" />
+        </ScrollViewer>
+    </ui:NavigationView>
+</Window>
