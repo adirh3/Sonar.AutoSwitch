@@ -10,7 +10,7 @@ public partial class Home : UserControl
     public Home()
     {
         InitializeComponent();
-        DataContext = StateManager.Instance.GetOrLoadState<HomeViewModel>();
+        DataContext = HomeViewModel.LoadHomeViewModel();
     }
 
     private void InitializeComponent()

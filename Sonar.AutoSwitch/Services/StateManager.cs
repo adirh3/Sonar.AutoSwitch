@@ -16,7 +16,7 @@ public class StateManager
     public StateManager()
     {
         _appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "SonarAutoSwitch");
+            "Sonar.AutoSwitch");
     }
 
     public void SaveState<T>()
@@ -40,14 +40,21 @@ public class StateManager
         return default;
     }
 
-    public T? GetOrLoadState<T>() where T : new()
+    public T GetOrLoadState<T>() where T : new()
     {
         if (GetState<T>() is { } existingState)
             return existingState;
 
         string jsonPath = Path.Combine(_appDataPath, typeof(T).Name + ".json");
+#pragma warning disable IL2026
         T? loadState = !File.Exists(jsonPath) ? new T() : JsonSerializer.Deserialize<T>(File.ReadAllText(jsonPath));
+#pragma warning restore IL2026
         _states[typeof(T)] = loadState;
-        return loadState;
+        return loadState!;
+    }
+
+    public bool CheckStateExists<T>()
+    {
+        return File.Exists(Path.Combine(_appDataPath, typeof(T).Name + ".json"));
     }
 }
