@@ -10,6 +10,7 @@ using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Media;
 using FluentAvalonia.UI.Windowing;
 using Sonar.AutoSwitch.Pages;
+using Sonar.AutoSwitch.Services.Win32;
 
 namespace Sonar.AutoSwitch;
 
@@ -28,6 +29,7 @@ public partial class MainWindow : AppWindow
     {
         base.OnClosing(e);
         Hide();
+        MemoryUtils.MinimizeFootprint();
         e.Cancel = true;
     }
 
