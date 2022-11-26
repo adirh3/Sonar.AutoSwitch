@@ -14,7 +14,7 @@ Automatically switch Sonar haming configurations when a game is in focus.
 
 ### Built With
 * [dotnet-7.0](https://dotnet.microsoft.com/download/dotnet-core/7.0)
-* [avalonia](https://github.com/AvaloniaUI/Avalonia/discussions/7886)
+* [avalonia](https://github.com/AvaloniaUI/Avalonia/)
 
 ## Build and run
 
