@@ -12,6 +12,7 @@
     <DockPanel>
         <TextBlock DockPanel.Dock="Top" Text="Auto Switch Profiles" Margin="0,0,0,8"
                    Theme="{StaticResource SubtitleTextBlockStyle}" />
+        <TextBlock DockPanel.Dock="Top" Text="Default config: " Margin="0,0,0,4"/>
         <ComboBox DockPanel.Dock="Top" SelectedItem="{Binding DefaultSonarGamingConfiguration}"
                   PlaceholderText="Default game configuration" Margin="0,0,0,8"
                   Items="{Binding Path=AvailableGamingConfigurations, Source={x:Static services:SteelSeriesSonarService.Instance}}">
@@ -21,6 +22,7 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
+        <TextBlock DockPanel.Dock="Top" Text="Per app config: " Margin="0,0,0,4"/>
         <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Stretch">
 
             <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center">
