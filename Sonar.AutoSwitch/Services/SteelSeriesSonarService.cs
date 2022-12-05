@@ -18,7 +18,7 @@ public class SteelSeriesSonarService : ISteelSeriesSonarService
         _connectionString = new SqliteConnectionStringBuilder
         {
             DataSource = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-                @"SteelSeries\GG\sonar\db\database.db")
+                @"SteelSeries\GG\apps\sonar\db\database.db")
         }.ToString();
     }
 
