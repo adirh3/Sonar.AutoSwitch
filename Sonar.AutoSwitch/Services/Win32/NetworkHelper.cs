@@ -7,7 +7,6 @@ namespace Sonar.AutoSwitch.Services.Win32;
 
 public class NetworkHelper
 {
-
 // https://msdn2.microsoft.com/en-us/library/aa366386.aspx
     public enum TCP_TABLE_CLASS
     {
@@ -22,21 +21,22 @@ public class NetworkHelper
         TCP_TABLE_OWNER_MODULE_ALL
     }
 
-    public static int? GetPortById(int pid)
+    public static IEnumerable<int> GetPortById(int pid, bool isRemote = true)
     {
         var mibTcprowOwnerPids = new IPHelperWrapper().GetAllTCPv6Connections();
         foreach (var mibTcprowOwnerPid in mibTcprowOwnerPids)
         {
             if (mibTcprowOwnerPid.owningPid == pid)
             {
-                return GetPort(mibTcprowOwnerPid.remotePort);
+                int portById = GetPort(isRemote ? mibTcprowOwnerPid.remotePort : mibTcprowOwnerPid.localPort);
+                if (portById == 0)
+                    continue;
+                yield return portById;
             }
         }
-
-        return null;
     }
 
-    static int GetPort(byte[] bytes)
+    public static int GetPort(byte[] bytes)
     {
         ushort num = BitConverter.ToUInt16(bytes, 0);
         return (int) (((num & 0xFF000000) >> 8) | ((num & 0x00FF0000) << 8) | ((num & 0x0000FF00) >> 8) |
