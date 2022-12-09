@@ -48,24 +48,32 @@
                 IsEnabled="{Binding SelectedAutoSwitchProfileViewModel, Converter={x:Static ObjectConverters.IsNotNull}}"
                 BorderThickness="1" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
                 Background="{DynamicResource ControlFillColorDefaultBrush}">
-            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto, Auto"
+            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto, Auto, Auto"
                   DataContext="{Binding SelectedAutoSwitchProfileViewModel}">
                 <StackPanel>
                     <TextBlock Text="Game executable name: " VerticalAlignment="Top" Margin="0,0,2,0" />
-                    <TextBlock Text="The name of the executable.&#x0a;You can use the Task Manager to check."
+                    <TextBlock Text="The name of the executable.&#x0a;You can use the Task Manager to check.&#x0a;Leave empty to ignore."
                                TextWrapping="Wrap" Opacity="0.5" VerticalAlignment="Top" Margin="0,0,2,10" />
                 </StackPanel>
                 <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ExeName}"
                          VerticalAlignment="Top" Watermark="The name of the executable, e.g. Overwatch" />
 
                 <StackPanel Grid.Row="1" Grid.Column="0">
+                    <TextBlock Text="Window title: " VerticalAlignment="Top" Margin="0,0,2,0" />
+                    <TextBlock Text="The title of the window.&#x0a;Leave empty to ignore."
+                               TextWrapping="Wrap" Opacity="0.5" VerticalAlignment="Top" Margin="0,0,2,10" />
+                </StackPanel>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Title}"
+                         VerticalAlignment="Top" Watermark="The title of the game, use for protected games like Valorant, COD" />
+                
+                <StackPanel Grid.Row="2" Grid.Column="0">
                     <TextBlock Text="Sonar gaming configuration: " VerticalAlignment="Top"
                                Margin="0,0,2,0" />
                     <TextBlock Text="The name of the Sonar Gaming Profile.&#x0a;You can setup profiles in the GG app."
                                TextWrapping="Wrap" Opacity="0.5" VerticalAlignment="Top" Margin="0,0,2,0" />
                 </StackPanel>
 
-                <ComboBox Grid.Row="1" Grid.Column="1" SelectedItem="{Binding SonarGamingConfiguration}"
+                <ComboBox Grid.Row="2" Grid.Column="1" SelectedItem="{Binding SonarGamingConfiguration}"
                           VerticalAlignment="Top"
                           Items="{Binding Path=AvailableGamingConfigurations, Source={x:Static services:SteelSeriesSonarService.Instance}}">
                     <ComboBox.ItemTemplate>

@@ -6,6 +6,18 @@ public class AutoSwitchProfileViewModel : ViewModelBase
 {
     private string _exeName = "MyGame";
     private SonarGamingConfiguration _sonarGamingConfiguration = new(null, "Unset");
+    private string _title;
+
+    public string Title
+    {
+        get => _title;
+        set
+        {
+            if (value == _title) return;
+            _title = value;
+            OnPropertyChanged();
+        }
+    }
 
     public string ExeName
     {

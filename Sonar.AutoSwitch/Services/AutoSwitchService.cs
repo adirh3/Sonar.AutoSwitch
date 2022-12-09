@@ -27,13 +27,15 @@ public class AutoSwitchService
 
     private void InstanceOnForegroundWindowChanged(object? sender, WindowInfo e)
     {
-        string windowExeName = e.ExeName;
+        string? windowExeName = e.ExeName;
         if (string.Equals(windowExeName, "explorer", StringComparison.OrdinalIgnoreCase))
             return;
 
         AutoSwitchProfileViewModel? autoSwitchProfileViewModel =
             _homeViewModel.AutoSwitchProfiles.FirstOrDefault(p =>
-                string.Equals(p.ExeName, windowExeName, StringComparison.OrdinalIgnoreCase));
+                (string.IsNullOrEmpty(p.ExeName) ||
+                 string.Equals(p.ExeName, windowExeName, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(p.Title) || e.Title.Contains(p.Title, StringComparison.OrdinalIgnoreCase)));
         SonarGamingConfiguration? sonarGamingConfiguration = autoSwitchProfileViewModel?.SonarGamingConfiguration;
         sonarGamingConfiguration ??= _homeViewModel.DefaultSonarGamingConfiguration;
         if (string.IsNullOrEmpty(sonarGamingConfiguration.Id) ||

@@ -39,7 +39,7 @@ public partial class MainWindow : AppWindow
         {
             NavigationViewItem {Tag: "Home"} => typeof(Home),
             NavigationViewItem {Tag: "About"} => typeof(About),
-            NavigationViewItem {Tag: "Settings"} => typeof(Settings),
+            NavigationViewItem {Name: "SettingsItem"} => typeof(Settings),
             _ => throw new ArgumentOutOfRangeException()
         });
     }
