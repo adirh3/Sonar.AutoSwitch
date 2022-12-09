@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Sonar.AutoSwitch.Services.Win32;
 
@@ -57,28 +58,47 @@ public class Win32WindowEventManager : IWindowEventManager
         ForegroundWindowChanged?.Invoke(this, e);
     }
 
-    private void WindowEventCallback(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject,
+    private void WindowEventCallback(nint hWinEventHook, uint eventType, nint hwnd, int idObject,
         int idChild, uint dwEventThread, uint dwmsEventTime)
     {
+        string windowTitle = GetWindowTitle(hwnd);
         if (GetWindowThreadProcessId(hwnd, out var pid) == 0)
             return;
+        string? exeName = null;
         try
         {
             using var processById = Process.GetProcessById((int) pid);
             string? fileName = processById.MainModule?.FileName;
             if (string.IsNullOrEmpty(fileName))
                 return;
-            string name = Path.GetFileNameWithoutExtension(fileName);
-            OnForegroundWindowChanged(new WindowInfo(name));
+            exeName = Path.GetFileNameWithoutExtension(fileName);
         }
         catch (Exception)
         {
             // ignored
         }
+        OnForegroundWindowChanged(new WindowInfo(exeName, windowTitle));
     }
 
 
     #region Win32
+
+    private static string GetWindowTitle(nint hWnd)
+    {
+        int textLength = GetWindowTextLength(hWnd);
+        var stringBuilder = new StringBuilder(textLength + 1);
+        // Getting the window's title
+        GetWindowText(hWnd, stringBuilder, stringBuilder.Capacity);
+        var title = stringBuilder.ToString();
+        return title;
+    }
+
+
+    [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+    static extern int GetWindowTextLength(IntPtr hWnd);
+
+    [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+    static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int maxCount);
 
     private delegate void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild,
         uint dwEventThread, uint dwmsEventTime);
