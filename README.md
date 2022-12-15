@@ -11,6 +11,7 @@ Automatically switch Sonar haming configurations when a game is in focus.
 2. Extract the ZIP and launch `Sonar.AutoSwitch.exe`
 3. Set the `Per app config` per game / apps
 4. Set the `Default config` to apply to all **other** games/apps
+5. To set game, set the `Executable name` of the app. For some games like Valorant it won't work, if that's the case then use `Title` instead and leave the `Executable name` empty.
 
 ### Built With
 * [dotnet-7.0](https://dotnet.microsoft.com/download/dotnet-core/7.0)
