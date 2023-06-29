@@ -12,7 +12,11 @@
     <DockPanel>
         <TextBlock DockPanel.Dock="Top" Text="Auto Switch Profiles" Margin="0,0,0,8"
                    Theme="{StaticResource SubtitleTextBlockStyle}" />
-        <TextBlock DockPanel.Dock="Top" Text="Default config: " Margin="0,0,0,4"/>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0,0,0,4">
+            <TextBlock DockPanel.Dock="Top" Text="Active config: " />
+            <TextBlock Text="{Binding ActiveProfile.Name}" FontWeight="Bold" />
+        </StackPanel>
+        <TextBlock DockPanel.Dock="Top" Text="Default config: " Margin="0,0,0,4" />
         <ComboBox DockPanel.Dock="Top" SelectedItem="{Binding DefaultSonarGamingConfiguration}"
                   PlaceholderText="Default game configuration" Margin="0,0,0,8"
                   Items="{Binding Path=AvailableGamingConfigurations, Source={x:Static services:SteelSeriesSonarService.Instance}}">
@@ -22,7 +26,7 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <TextBlock DockPanel.Dock="Top" Text="Per app config: " Margin="0,0,0,4"/>
+        <TextBlock DockPanel.Dock="Top" Text="Per app config: " Margin="0,0,0,4" />
         <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Stretch">
 
             <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center">
@@ -52,8 +56,9 @@
                   DataContext="{Binding SelectedAutoSwitchProfileViewModel}">
                 <StackPanel>
                     <TextBlock Text="Game executable name: " VerticalAlignment="Top" Margin="0,0,2,0" />
-                    <TextBlock Text="The name of the executable.&#x0a;You can use the Task Manager to check.&#x0a;Leave empty to ignore."
-                               TextWrapping="Wrap" Opacity="0.5" VerticalAlignment="Top" Margin="0,0,2,10" />
+                    <TextBlock
+                        Text="The name of the executable.&#x0a;You can use the Task Manager to check.&#x0a;Leave empty to ignore."
+                        TextWrapping="Wrap" Opacity="0.5" VerticalAlignment="Top" Margin="0,0,2,10" />
                 </StackPanel>
                 <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ExeName}"
                          VerticalAlignment="Top" Watermark="The name of the executable, e.g. Overwatch" />
@@ -64,8 +69,9 @@
                                TextWrapping="Wrap" Opacity="0.5" VerticalAlignment="Top" Margin="0,0,2,10" />
                 </StackPanel>
                 <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Title}"
-                         VerticalAlignment="Top" Watermark="The title of the game, use for protected games like Valorant, COD" />
-                
+                         VerticalAlignment="Top"
+                         Watermark="The title of the game, use for protected games like Valorant, COD" />
+
                 <StackPanel Grid.Row="2" Grid.Column="0">
                     <TextBlock Text="Sonar gaming configuration: " VerticalAlignment="Top"
                                Margin="0,0,2,0" />

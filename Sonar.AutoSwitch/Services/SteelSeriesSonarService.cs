@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 using Sonar.AutoSwitch.Services.Win32;
+using Sonar.AutoSwitch.ViewModels;
 
 namespace Sonar.AutoSwitch.Services;
 
@@ -80,6 +81,8 @@ public class SteelSeriesSonarService : ISteelSeriesSonarService
                 break;
             }
         }
+
+        StateManager.Instance.GetOrLoadState<HomeViewModel>().ActiveProfile = sonarGamingConfiguration;
     }
 
     public string GetSelectedGamingConfiguration()

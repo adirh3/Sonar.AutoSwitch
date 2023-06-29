@@ -18,17 +18,23 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        var firstLoad = !StateManager.Instance.CheckStateExists<SettingsViewModel>();
+        var settingsViewModel = StateManager.Instance.GetOrLoadState<SettingsViewModel>();
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-            desktop.MainWindow = new MainWindow();
+            if (firstLoad)
+            {
+                desktop.MainWindow = new MainWindow();
+                StateManager.Instance.SaveState<SettingsViewModel>();
+            }
         }
 
-        var settingsViewModel = StateManager.Instance.GetOrLoadState<SettingsViewModel>();
         if (settingsViewModel.Enabled)
             AutoSwitchService.Instance.ToggleEnabled(settingsViewModel.Enabled);
         if (settingsViewModel.StartAtStartup)
             StartupService.RegisterInStartup(true);
+
         base.OnFrameworkInitializationCompleted();
     }
 }
