@@ -9,10 +9,11 @@ namespace Sonar.AutoSwitch.ViewModels;
 public class HomeViewModel : ViewModelBase
 {
     private ObservableCollection<AutoSwitchProfileViewModel> _autoSwitchProfiles =
-        new() {new AutoSwitchProfileViewModel()};
+        new() { new AutoSwitchProfileViewModel() };
 
     private SonarGamingConfiguration _defaultSonarGamingConfiguration = new(null, "unset");
     private AutoSwitchProfileViewModel? _selectedAutoSwitchProfileViewModel;
+    private SonarGamingConfiguration _activeProfile;
 
     public HomeViewModel()
     {
@@ -53,18 +54,33 @@ public class HomeViewModel : ViewModelBase
         }
     }
 
+    [JsonIgnore]
+    public SonarGamingConfiguration ActiveProfile
+    {
+        get => _activeProfile;
+        set
+        {
+            if (Equals(value, _activeProfile)) return;
+            _activeProfile = value;
+            OnPropertyChanged();
+        }
+    }
+
     public static HomeViewModel LoadHomeViewModel()
     {
         bool firstLoad = !StateManager.Instance.CheckStateExists<HomeViewModel>();
         var homeViewModel = StateManager.Instance.GetOrLoadState<HomeViewModel>();
         var steelSeriesSonarService = SteelSeriesSonarService.Instance;
+        string selectedConfigId = steelSeriesSonarService.GetSelectedGamingConfiguration();
+        var activeProfile = steelSeriesSonarService.GetGamingConfigurations()
+            .FirstOrDefault(gc => gc.Id == selectedConfigId);
         if (firstLoad)
         {
-            string selectedConfigId = steelSeriesSonarService.GetSelectedGamingConfiguration();
-            homeViewModel.DefaultSonarGamingConfiguration = steelSeriesSonarService.GetGamingConfigurations()
-                .FirstOrDefault(gc => gc.Id == selectedConfigId) ?? homeViewModel.DefaultSonarGamingConfiguration;
+            homeViewModel.DefaultSonarGamingConfiguration =
+                activeProfile ?? homeViewModel.DefaultSonarGamingConfiguration;
         }
 
+        homeViewModel.ActiveProfile = activeProfile ?? homeViewModel.DefaultSonarGamingConfiguration;
         return homeViewModel;
     }
 
