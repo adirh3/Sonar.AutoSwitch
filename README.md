@@ -6,7 +6,7 @@ Automatically switch Sonar haming configurations when a game is in focus.
 
 ## Contribution to game database
 
-Auto switch will switch based on game database in `game_database.json`.
+Auto switch will switch based on game database in `game_database.json`.  
 Feel free to create pull requests to add more games, the schema of the JSON is -
 ```json
 {
