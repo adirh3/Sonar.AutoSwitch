@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Sonar.AutoSwitch.ViewModels;
 
@@ -31,8 +33,15 @@ public class AutoSwitchService
         if (string.Equals(windowExeName, "explorer", StringComparison.OrdinalIgnoreCase))
             return;
 
+        IEnumerable<AutoSwitchProfileViewModel> autoSwitchProfileViewModels = _homeViewModel.AutoSwitchProfiles;
+        if (StateManager.Instance.GetOrLoadState<SettingsViewModel>().UseGithubConfigs)
+        {
+            autoSwitchProfileViewModels =
+                autoSwitchProfileViewModels.Concat(AutoSwitchProfilesDatabase.Instance.GithubProfiles);
+        }
+        
         AutoSwitchProfileViewModel? autoSwitchProfileViewModel =
-            _homeViewModel.AutoSwitchProfiles.FirstOrDefault(p =>
+            autoSwitchProfileViewModels.FirstOrDefault(p =>
                 (string.IsNullOrEmpty(p.ExeName) ||
                  string.Equals(p.ExeName, windowExeName, StringComparison.OrdinalIgnoreCase)) &&
                 (string.IsNullOrEmpty(p.Title) || e.Title.Contains(p.Title, StringComparison.OrdinalIgnoreCase)));
