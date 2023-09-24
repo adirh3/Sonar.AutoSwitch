@@ -32,6 +32,8 @@ public class SettingsViewModel : ViewModelBase
         }
     }
 
+    public bool UseGithubConfigs { get; set; } = true;
+
     protected override void OnPropertyChanged(string? propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
