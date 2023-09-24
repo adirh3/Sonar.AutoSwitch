@@ -20,7 +20,7 @@ public class AutoSwitchProfilesDatabase
             using var httpClient = new HttpClient();
             using HttpResponseMessage httpResponseMessage =
                 await httpClient.GetAsync(
-                    "https://raw.githubusercontent.com/adirh3/Sonar.AutoSwitch/main/game_database.json");
+                    "https://raw.githubusercontent.com/adirh3/Sonar.AutoSwitch/master/game_database.json");
             await using Stream stream = await httpResponseMessage.Content.ReadAsStreamAsync();
             var githubConfigs =
                 await JsonSerializer.DeserializeAsync<Dictionary<string, WindowInfo>>(stream);
