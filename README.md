@@ -4,6 +4,20 @@ Automatically switch Sonar haming configurations when a game is in focus.
 
 <img width="688" alt="image" src="https://user-images.githubusercontent.com/27368554/204064870-da45ebaa-e577-4998-aaa1-4c18386149e1.png">
 
+## Contribution to game database
+
+Auto switch will switch based on game database in `game_database.json`.
+Feel free to create pull requests to add more games, the schema of the JSON is -
+```json
+{
+    "Game Name": // Game Name (As shown in UI)
+        {
+            "ExeName": "FileName", // Filter based on Exe name without the .exe
+            "Title": "WindowTitle" // Filter based on window title
+        }
+}
+```
+
 
 ## How to use
 
