@@ -68,7 +68,6 @@ public class HomeViewModel : ViewModelBase
 
     public static HomeViewModel LoadHomeViewModel()
     {
-        _ = AutoSwitchProfilesDatabase.Instance.LoadDatabaseAsync();
         bool firstLoad = !StateManager.Instance.CheckStateExists<HomeViewModel>();
         var homeViewModel = StateManager.Instance.GetOrLoadState<HomeViewModel>();
         var steelSeriesSonarService = SteelSeriesSonarService.Instance;

@@ -35,6 +35,7 @@ public class App : Application
         if (settingsViewModel.StartAtStartup)
             StartupService.RegisterInStartup(true);
 
+        _ = AutoSwitchProfilesDatabase.Instance.LoadDatabaseAsync();
         base.OnFrameworkInitializationCompleted();
     }
 }

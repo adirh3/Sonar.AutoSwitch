@@ -25,7 +25,7 @@
                 <ToggleSwitch IsChecked="{Binding StartAtStartup}" />
             </ui:SettingsExpander.Footer>
         </ui:SettingsExpander>
-        <ui:SettingsExpander IconSource="RotateClockwise" Header="Use GitHub profiles" IsExpanded="True"
+        <ui:SettingsExpander IconSource="Cloud" Header="Use GitHub profiles" IsExpanded="True"
                              Description="Use profiles set by users in GitHub"
                              IsClickEnabled="False">
             <ui:SettingsExpander.Footer>
