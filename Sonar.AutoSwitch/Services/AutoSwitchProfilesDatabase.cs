@@ -22,18 +22,17 @@ public class AutoSwitchProfilesDatabase
                 await httpClient.GetAsync(
                     "https://raw.githubusercontent.com/adirh3/Sonar.AutoSwitch/master/game_database.json");
             await using Stream stream = await httpResponseMessage.Content.ReadAsStreamAsync();
-            var githubConfigs =
-                await JsonSerializer.DeserializeAsync<Dictionary<string, WindowInfo>>(stream);
+            var githubConfigs = await JsonSerializer.DeserializeAsync<List<GitHubProfile>>(stream);
             var switchProfileViewModels = new List<AutoSwitchProfileViewModel>();
-            foreach ((string? key, (string? exeName, string? title)) in githubConfigs!)
+            foreach ((string? sonarProfileName, string? exeName, string? title) in githubConfigs!)
             {
                 SonarGamingConfiguration? sonarGamingConfiguration =
-                    SteelSeriesSonarService.Instance.AvailableGamingConfigurations.FirstOrDefault(s => s.Name == key);
+                    SteelSeriesSonarService.Instance.AvailableGamingConfigurations.FirstOrDefault(s => s.Name == sonarProfileName);
                 if (sonarGamingConfiguration == null) continue;
                 switchProfileViewModels.Add(new AutoSwitchProfileViewModel
                 {
                     Title = title,
-                    ExeName = exeName!,
+                    ExeName = exeName,
                     SonarGamingConfiguration = sonarGamingConfiguration
                 });
             }
@@ -48,3 +47,5 @@ public class AutoSwitchProfilesDatabase
 
     public List<AutoSwitchProfileViewModel> GithubProfiles { get; private set; } = new();
 }
+
+public record GitHubProfile(string SonarProfileName, string ExeName, string Title);
