@@ -1,37 +1,70 @@
 [
+  {	
+	"SonarProfileName": "Apex Legends",
+	"ExeName": "r5apex"
+  },
+  {	
+	"SonarProfileName": "Apex Legends",
+	"ExeName": "r5apex_dx12"
+  },
   {
 	"SonarProfileName": "Baldur's Gate 3",
-	"ExeName": "bg3",
+	"ExeName": "bg3"
+  },
+  {
+	"SonarProfileName": "Baldur's Gate 3",
 	"ExeName": "bg3_dx11"
   },
   {
 	"SonarProfileName": "Cyberpunk 2077",
-  "ExeName": "Cyberpunk2077"
+	"ExeName": "Cyberpunk2077"
   },
   {
 	"SonarProfileName": "Diablo® IV by Blizzard",
-  "ExeName": "Diablo IV",
-	"ExeName": "Diablo III",
-	"ExeName": "D2R",
-	"ExeName": "PathOfExile"
+	"ExeName": "Diablo IV"
+  },
+  {
+	"SonarProfileName": "Diablo® IV by Blizzard",
+	"ExeName": "Diablo III"
+  },
+  {
+	"SonarProfileName": "Diablo® IV by Blizzard",
+  	"ExeName": "D2R"
+  },
+  {
+	"SonarProfileName": "Diablo® IV by Blizzard",
+ 	"ExeName": "PathOfExile"
+  },
+  {
+	"SonarProfileName": "The Elder Scrolls Online",
+	"ExeName": "eso64"
   },
   {
 	"SonarProfileName": "League of Legends",
-	"ExeName": "League of Legends",
+	"ExeName": "League of Legends"
+  },
+  {
+	"SonarProfileName": "League of Legends",
 	"ExeName": "LeagueClient"
   },
   {
 	"SonarProfileName": "Overwatch 2",
-  "ExeName": "Overwatch"
+ 	"ExeName": "Overwatch"
   },
   {
 	"SonarProfileName": "Starfield",
 	"ExeName": "Starfield"
-  }
+  },
   {
 	"SonarProfileName": "World of Warcraft",
-	"ExeName": "Wow",
-	"ExeName": "WowClassic",
+	"ExeName": "Wow"
+  },
+  {
+	"SonarProfileName": "World of Warcraft",
+	"ExeName": "WowClassic"
+  },
+  {
+	"SonarProfileName": "World of Warcraft",
 	"ExeName": "Gw2-64"
   }
 ]
