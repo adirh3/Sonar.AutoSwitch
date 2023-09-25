@@ -1,11 +1,27 @@
 {
-  "Overwatch 2": {
-    "ExeName": "Overwatch"
+  "Baldur's Gate 3": {
+	"ExeName": "bg3"
+	"ExeName": "bg3_dx11"
   },
   "Cyberpunk 2077": {
     "ExeName": "Cyberpunk2077"
   },
   "Diablo® IV by Blizzard": {
     "ExeName": "Diablo IV"
+	"ExeName": "Diablo III"
+	"ExeName": "D2R"
+	"ExeName": "PathOfExile"
+  },
+  "League of Legends": {
+	"ExeName": "League of Legends"
+	"ExeName": "LeagueClient"
+  },
+  "Overwatch 2": {
+    "ExeName": "Overwatch"
+  },
+  "World of Warcraft": {
+	"ExeName": "Wow"
+	"ExeName": "WowClassic"
+	"ExeName": "Gw2-64"
   }
 }
