@@ -23,7 +23,7 @@ public class NetworkHelper
 
     public static IEnumerable<int> GetPortById(int pid, bool isRemote = true)
     {
-        var mibTcprowOwnerPids = new IPHelperWrapper().GetAllTCPv6Connections();
+        var mibTcprowOwnerPids = new IPHelperWrapper().GetAllTCPv4Connections();
         foreach (var mibTcprowOwnerPid in mibTcprowOwnerPids)
         {
             if (mibTcprowOwnerPid.owningPid == pid)
