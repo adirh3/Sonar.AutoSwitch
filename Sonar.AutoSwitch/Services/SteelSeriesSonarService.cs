@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 using Sonar.AutoSwitch.Services.Win32;
@@ -48,33 +49,30 @@ public class SteelSeriesSonarService : ISteelSeriesSonarService
         }
     }
 
-    public async Task ChangeSelectedGamingConfiguration(SonarGamingConfiguration sonarGamingConfiguration)
+    public async Task ChangeSelectedGamingConfiguration(SonarGamingConfiguration sonarGamingConfiguration,
+        CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(sonarGamingConfiguration.Id))
             return;
 
-        Process[] processesByName = Process.GetProcessesByName("SteelSeriesGGClient");
-        IEnumerable<int> potentialPorts;
-        if (processesByName.Length >= 1)
-        {
-            potentialPorts = processesByName.SelectMany(p => NetworkHelper.GetPortById(p.Id));
-        }
-        else
-        {
-            potentialPorts = NetworkHelper.GetPortById(4, false); // idle process
-        }
+        Process[] processesByName = Process.GetProcessesByName("SteelSeriesSonar");
+        if (processesByName.Length <= 0 || cancellationToken.IsCancellationRequested)
+            return;
+        
+        IEnumerable<int> potentialPorts = processesByName.SelectMany(p => NetworkHelper.GetPortById(p.Id, false));
 
-        potentialPorts =
-            (_lastWorkingPort != null ? new[] {_lastWorkingPort.Value} : Enumerable.Empty<int>())
-            .Concat(potentialPorts);
+        potentialPorts = _lastWorkingPort != null ? potentialPorts.Prepend(_lastWorkingPort.Value) : potentialPorts;
         _lastWorkingPort = null;
 
         using var httpClient = new HttpClient();
-        foreach (int potentialPort in potentialPorts)
+        foreach (int potentialPort in potentialPorts.Distinct())
         {
+            if (cancellationToken.IsCancellationRequested)
+                return;
             HttpResponseMessage? httpResponseMessage = await httpClient.PutAsync(
                 $"http://localhost:{potentialPort}/configs/{sonarGamingConfiguration.Id}/select",
-                new StringContent("")).ContinueWith(t => t.IsCompletedSuccessfully ? t.Result : null);
+                new StringContent(""),
+                cancellationToken).ContinueWith(t => t.IsCompletedSuccessfully ? t.Result : null);
             if (httpResponseMessage?.StatusCode == HttpStatusCode.OK)
             {
                 _lastWorkingPort = potentialPort;
