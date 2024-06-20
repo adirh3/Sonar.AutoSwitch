@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -28,7 +28,6 @@
         </ComboBox>
         <TextBlock DockPanel.Dock="Top" Text="Per app config: " Margin="0,0,0,4" />
         <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Stretch">
-
             <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center">
                 <Button Command="{Binding AddAutoSwitchProfile}" VerticalAlignment="Center" Margin="0,0,0,2">
                     <ui:SymbolIcon Symbol="Add" />
@@ -42,7 +41,14 @@
                      Items="{Binding AutoSwitchProfiles}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="viewModels:AutoSwitchProfileViewModel">
-                        <TextBlock Text="{Binding ExeName}" />
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0} ({1})">
+                                    <Binding Path="ExeName" />
+                                    <Binding Path="Title" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -62,7 +68,6 @@
                 </StackPanel>
                 <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ExeName}"
                          VerticalAlignment="Top" Watermark="The name of the executable, e.g. Overwatch" />
-
                 <StackPanel Grid.Row="1" Grid.Column="0">
                     <TextBlock Text="Window title: " VerticalAlignment="Top" Margin="0,0,2,0" />
                     <TextBlock Text="The title of the window.&#x0a;Leave empty to ignore."
@@ -71,14 +76,12 @@
                 <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Title}"
                          VerticalAlignment="Top"
                          Watermark="The title of the game, use for protected games like Valorant, COD" />
-
                 <StackPanel Grid.Row="2" Grid.Column="0">
                     <TextBlock Text="Sonar gaming configuration: " VerticalAlignment="Top"
                                Margin="0,0,2,0" />
                     <TextBlock Text="The name of the Sonar Gaming Profile.&#x0a;You can setup profiles in the GG app."
                                TextWrapping="Wrap" Opacity="0.5" VerticalAlignment="Top" Margin="0,0,2,0" />
                 </StackPanel>
-
                 <ComboBox Grid.Row="2" Grid.Column="1" SelectedItem="{Binding SonarGamingConfiguration}"
                           VerticalAlignment="Top"
                           Items="{Binding Path=AvailableGamingConfigurations, Source={x:Static services:SteelSeriesSonarService.Instance}}">
@@ -90,7 +93,5 @@
                 </ComboBox>
             </Grid>
         </Border>
-
-
     </DockPanel>
 </UserControl>
