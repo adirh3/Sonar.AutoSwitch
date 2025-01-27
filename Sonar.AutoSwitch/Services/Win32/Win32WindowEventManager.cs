@@ -62,12 +62,15 @@ public class Win32WindowEventManager : IWindowEventManager
         int idChild, uint dwEventThread, uint dwmsEventTime)
     {
         string windowTitle = GetWindowTitle(hwnd);
-        if (GetWindowThreadProcessId(hwnd, out var pid) == 0)
-            return;
         string? exeName = null;
+        if (GetWindowThreadProcessId(hwnd, out var pid) == 0)
+        {
+            OnForegroundWindowChanged(new WindowInfo(exeName, windowTitle));
+            return;
+        }
         try
         {
-            using var processById = Process.GetProcessById((int) pid);
+            using var processById = Process.GetProcessById((int)pid);
             string? fileName = processById.MainModule?.FileName;
             if (string.IsNullOrEmpty(fileName))
                 return;

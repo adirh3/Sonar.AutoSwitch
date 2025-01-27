@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using Avalonia.Logging;
 using Sonar.AutoSwitch.ViewModels;
 
 namespace Sonar.AutoSwitch.Services;
@@ -48,11 +50,11 @@ public class AutoSwitchService
                     autoSwitchProfileViewModels.Concat(AutoSwitchProfilesDatabase.Instance.GithubProfiles);
             }
 
-            AutoSwitchProfileViewModel? autoSwitchProfileViewModel =
-                autoSwitchProfileViewModels.FirstOrDefault(p =>
+            AutoSwitchProfileViewModel? autoSwitchProfileViewModel = autoSwitchProfileViewModels.FirstOrDefault(p =>
                     (string.IsNullOrEmpty(p.ExeName) ||
                      string.Equals(p.ExeName, windowExeName, StringComparison.OrdinalIgnoreCase)) &&
-                    (string.IsNullOrEmpty(p.Title) || e.Title.Contains(p.Title, StringComparison.OrdinalIgnoreCase)));
+                    p.MatchTitle(e.Title));
+
             SonarGamingConfiguration? sonarGamingConfiguration = autoSwitchProfileViewModel?.SonarGamingConfiguration;
             sonarGamingConfiguration ??= _homeViewModel.DefaultSonarGamingConfiguration;
             if (string.IsNullOrEmpty(sonarGamingConfiguration.Id) ||
