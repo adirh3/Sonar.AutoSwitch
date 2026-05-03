@@ -32,6 +32,18 @@
                 <ToggleSwitch IsChecked="{Binding UseGithubConfigs}" />
             </ui:SettingsExpander.Footer>
         </ui:SettingsExpander>
+      <ui:SettingsExpander IconSource="🖥️" Header="Select Display" IsExpanded="True"
+                         Description="Choose which monitor Sonar Auto Switch should focus"
+                         IsClickEnabled="False">
+        <ui:SettingsExpander.Footer>
+          <ScrollViewer Height="120" VerticalScrollBarVisibility="Auto">
+            <ComboBox Items="{Binding AvailableMonitors}"
+                      SelectedItem="{Binding SelectedMonitor, Mode=TwoWay}"
+                      SelectedIndex="0"
+                      Width="200"/>
+          </ScrollViewer>
+        </ui:SettingsExpander.Footer>
+      </ui:SettingsExpander>
     </StackPanel>
 
 </UserControl>

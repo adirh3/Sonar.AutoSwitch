@@ -1,11 +1,14 @@
 using Sonar.AutoSwitch.Services;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 namespace Sonar.AutoSwitch.ViewModels;
 
 public class AutoSwitchProfileViewModel : ViewModelBase
 {
+    private static readonly RegexOptions REGEX_OPTIONS = RegexOptions.IgnoreCase;
     private string _exeName = "MyGame";
     private string _title = "";
+    private Regex _titleRegex = new Regex("", REGEX_OPTIONS);
     private SonarGamingConfiguration _sonarGamingConfiguration = new(null, "Unset");
 
     public string Title
@@ -14,10 +17,16 @@ public class AutoSwitchProfileViewModel : ViewModelBase
         set
         {
             if (value == _title) return;
-            _title = value;
+            _title = value ??= "";
+            _titleRegex = new Regex(_title, REGEX_OPTIONS);
             OnPropertyChanged();
             OnPropertyChanged(nameof(DisplayName)); // Notify that DisplayName has changed
         }
+    }
+
+    public bool MatchTitle(string title)
+    {
+        return _titleRegex.IsMatch(title);
     }
 
     public string ExeName
